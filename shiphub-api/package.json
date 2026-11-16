@@ -1,0 +1,21 @@
+{
+  "name": "shiphub-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --env-file=.env  --watch server.js",
+    "start": "node --env-file=.env  server.js",
+    "db:migrate": "node --env-file=.env migrations/add-priority.js",
+    "test": "MONGODB_URI=mongodb://127.0.0.1:27017/shiphub_test node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "mongoose": "^9.11.4"
+  }
+}
