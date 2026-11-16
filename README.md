@@ -193,5 +193,11 @@ docker stop shiphub-pickups-db
 The Dockerfile, `.dockerignore`, Compose configuration, build/run commands,
 connectivity checks, persistence verification, and troubleshooting notes are
 in [`Day 08/`](<./Day 08/>). Start with its [assignment README](<./Day 08/README.md>).
+
+# 12. Day 09 — Repair, prove, and document the ShipHub stack
+
+The repaired root Compose stack and setup instructions are documented in
+[`Day 09/`](<./Day 09/>), with fault analysis in [`NOTES.md`](./NOTES.md) and
+terminal validation in [`Day 09/evidence.md`](<./Day 09/evidence.md>).
 # pluginhive_training_session
 # pluginhive_training_session

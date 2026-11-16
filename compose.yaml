@@ -1,19 +1,90 @@
-
 name: shiphub
- 
+
 services:
-
   mongo:
-
     image: mongo:8.0
-
-    ports: ["27017:27017"]
-
+    ports:
+      - "${MONGO_PORT:-27019}:27017"
     volumes:
-
       - mongo-data:/data/db
- 
+    networks:
+      - shiphub-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - shiphub-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  migrate:
+    image: shiphub-api:day09
+    build:
+      context: ./shiphub-api
+      dockerfile: Dockerfile
+    command: ["node", "migrations/add-priority.js"]
+    environment:
+      MONGODB_URI: ${MONGODB_URI:?Set MONGODB_URI in .env}
+    networks:
+      - shiphub-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    image: shiphub-api:day09
+    build:
+      context: ./shiphub-api
+      dockerfile: Dockerfile
+    environment:
+      PORT: "3000"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      MONGODB_URI: ${MONGODB_URI:?Set MONGODB_URI in .env}
+    ports:
+      - "${API_PORT:-3002}:3000"
+    networks:
+      - shiphub-network
+    depends_on:
+      mongo:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000/orders').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+
+networks:
+  shiphub-network:
+    driver: bridge
+
 volumes:
-
   mongo-data:
-
+  postgres-data:

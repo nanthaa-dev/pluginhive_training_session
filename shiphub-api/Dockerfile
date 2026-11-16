@@ -16,6 +16,7 @@ COPY --from=dependencies --chown=node:node /app/node_modules ./node_modules
 COPY --chown=node:node package.json server.js config.js db.js \
     errorHandler.js HttpError.js logger.js notFound.js order-model.js \
     order-store.js ./
+COPY --chown=node:node migrations ./migrations
 
 USER node
 
