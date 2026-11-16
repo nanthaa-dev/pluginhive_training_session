@@ -139,5 +139,53 @@ Run the following command to verify the frontend build:
 
 ```bash
 npm run build
-```# pluginhive_training_session
+```
+
+# 10. Pickup-address database assignment
+
+The normalized PostgreSQL design, rerunnable schema/seed/query script, invalid
+insert evidence, and storage decision are available here:
+
+- [`pickups.sql`](<./Day 07/pickups.sql>) — create the schema, seed sample data, and run
+  the four assignment queries. Query comments include predicted and verified
+  row counts.
+- [`pickup-addresses-erd.md`](<./Day 07/pickup-addresses-erd.md>) — flat-table anomalies
+  and the normalized ER diagram.
+- [`pickup-addresses-errors.md`](<./Day 07/pickup-addresses-errors.md>) — constraint
+  errors from the invalid insert tests, including the default-address stretch
+  check.
+- [`pickup-addresses-decision.md`](<./Day 07/pickup-addresses-decision.md>) — database
+  decision record.
+
+Run locally from the project root using a temporary PostgreSQL container. The
+existing `compose.yaml` starts MongoDB, not PostgreSQL:
+
+```bash
+docker run --name shiphub-pickups-db --rm -d \
+  -e POSTGRES_PASSWORD=shiphub-local \
+  -e POSTGRES_DB=shiphub \
+  -p 127.0.0.1:55432:5432 \
+  postgres:16-alpine
+```
+
+Wait until PostgreSQL is ready:
+
+```bash
+docker exec shiphub-pickups-db pg_isready -U postgres -d shiphub
+```
+
+Set the connection string, then run the assignment SQL:
+
+```bash
+export DATABASE_URL='postgresql://postgres:shiphub-local@127.0.0.1:55432/shiphub'
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "Day 07/pickups.sql"
+```
+
+You should see query result counts of **4, 1, 1, and 4**. When finished, stop
+the temporary database:
+
+```bash
+docker stop shiphub-pickups-db
+```
+# pluginhive_training_session
 # pluginhive_training_session
