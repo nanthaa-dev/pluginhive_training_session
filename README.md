@@ -187,5 +187,11 @@ the temporary database:
 ```bash
 docker stop shiphub-pickups-db
 ```
+
+# 11. Day 08 — Dockerise ShipHub
+
+The Dockerfile, `.dockerignore`, Compose configuration, build/run commands,
+connectivity checks, persistence verification, and troubleshooting notes are
+in [`Day 08/`](<./Day 08/>). Start with its [assignment README](<./Day 08/README.md>).
 # pluginhive_training_session
 # pluginhive_training_session

@@ -1,0 +1,18 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Environment files are provided to the container at runtime.
+.env
+.env.*
+
+# Version control
+.git
+
+# Logs
+npm-debug.log*
+*.log
+
+# Test artifacts and tests are not needed in the production image.
+coverage/
+tests/
