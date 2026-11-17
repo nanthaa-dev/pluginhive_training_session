@@ -11,6 +11,13 @@ export interface Order {
   customer: string;
   product: string;
   status: OrderStatus;
+  note?: string;
+}
+
+export interface CreateOrderInput {
+  customer: string;
+  product: string;
+  note?: string;
 }
 
 export type StatusCounts = Record<OrderStatus, number>;

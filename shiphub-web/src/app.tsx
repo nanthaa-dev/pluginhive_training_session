@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./app.css";
 
 import { getOrders, updateOrderStatus } from "./api";
+import OrderForm from "./components/OrderForm";
 import SearchBox from "./components/SearchBox";
 import StatusSummary from "./components/StatusSummary";
 import type { Order, OrderStatus } from "./types";
@@ -61,6 +62,8 @@ function App() {
   return (
     <main>
       <h1>ShipHub Order Tracker</h1>
+
+      <OrderForm onCreated={(order) => setOrders((current) => [order, ...current])} />
 
       {loading && <p>Loading orders...</p>}
 

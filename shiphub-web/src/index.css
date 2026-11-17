@@ -20,3 +20,8 @@ label {
   text-align: right;
   margin-bottom: 15px;
 }
+
+.field-shell > label {
+  margin-bottom: 6px;
+  text-align: left;
+}
