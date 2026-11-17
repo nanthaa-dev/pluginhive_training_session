@@ -7,6 +7,7 @@
     "setup": "node scripts/init-env.mjs && npm install && npm --prefix shiphub-api install && npm --prefix shiphub-web install",
     "up": "docker compose up -d --build --wait --wait-timeout 180",
     "down": "docker compose down",
+    "gql": "node \"Day 10/run-graphql-demo.mjs\"",
     "dev": "concurrently \"npm --prefix shiphub-api run dev\" \"npm --prefix shiphub-web run dev\"",
     "build": "npm --prefix shiphub-web run build",
     "start": "npm --prefix shiphub-api start"

@@ -16,6 +16,9 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    sellerId: {
+      type: String
+    },
     product: {
       type: String,
       required: true

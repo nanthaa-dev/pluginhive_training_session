@@ -55,11 +55,24 @@ export async function updateOrder(id, updates) {
 }
 
 export async function getOrdersByStatus(status) {
-  if (!status) {
-    return getAllOrders();
+  return listOrders({ status });
+}
+
+export async function listOrders({ status, sellerId, limit } = {}) {
+  const filter = {
+    ...(status ? { status } : {}),
+    ...(sellerId ? { sellerId } : {})
+  };
+
+  let query = Order.find(filter)
+    .sort({ createdAt: -1, id: 1 })
+    .select('-_id');
+
+  if (limit !== undefined) {
+    query = query.limit(limit);
   }
 
-  return await Order.find({ status }).select('-_id');
+  return await query;
 }
 export async function getHighPriorityOrders() {
   return await Order.find({ priority: 'high' })

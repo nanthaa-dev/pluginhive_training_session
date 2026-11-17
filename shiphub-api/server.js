@@ -8,6 +8,8 @@ import { errorHandler } from './errorHandler.js';
 import { HttpError } from './HttpError.js';
 import { connectDB } from './db.js';
 import Order from './order-model.js';
+import { createHandler } from 'graphql-http/lib/use/express';
+import { schema } from './resolvers.js';
 import { fileURLToPath } from 'node:url';
 export const app = express();
 app.use((req, res, next) => {
@@ -182,6 +184,7 @@ app.patch('/orders/:id', async (req, res) => {
     data: result
   });
 });
+app.all('/graphql', createHandler({ schema }));
 app.use(notFound);
 app.use(errorHandler);
 async function startServer() {

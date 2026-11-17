@@ -1,0 +1,38 @@
+type Query {
+  "All directory sellers; the list is always present and each entry is a seller."
+  sellers: [Seller!]!
+
+  "Returns null when the requested seller ID is absent from the directory."
+  seller(
+    "An ID is required to identify the seller being looked up."
+    id: ID!
+  ): Seller
+}
+
+type Seller {
+  "Seller IDs are present for every directory entry."
+  id: ID!
+
+  "Every seller directory entry has a name."
+  name: String!
+
+  "Every seller returned by this API has an assigned city."
+  city: String!
+
+  "The list is always present and every item is an order with required fields."
+  shippedOrders(
+    "Nullable so omission uses the default of five orders."
+    limit: Int = 5
+  ): [Order!]!
+}
+
+type Order {
+  "The order model requires an ID."
+  id: ID!
+
+  "The order model requires a product."
+  product: String!
+
+  "The order model requires a valid status."
+  status: String!
+}

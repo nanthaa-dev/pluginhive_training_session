@@ -8,6 +8,7 @@ async function seedOrders() {
     const orders = [];
 
     const priorities = ['low', 'normal', 'high'];
+    const sellerIds = ['1', '2', '3'];
     const statuses = [
       'Pending',
       'Processing',
@@ -20,6 +21,7 @@ async function seedOrders() {
       orders.push({
         id: `SEED-${i}`,
         customer: `Customer ${i}`,
+        sellerId: sellerIds[i % sellerIds.length],
         product: `Product ${i}`,
         status: statuses[i % statuses.length],
         priority: priorities[i % priorities.length],

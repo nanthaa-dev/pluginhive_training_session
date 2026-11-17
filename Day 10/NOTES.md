@@ -1,0 +1,3 @@
+# Support screen API decision
+
+GraphQL is a good fit for the support team's screen because one request can fetch a seller's name, city, and recent shipped orders together. With REST, the screen would need a seller lookup and a separate orders request for each seller, or a wider response carrying data the screen does not use. GraphQL lets the client request only `name`, `city`, and each order's `id` and `product`, reducing response size and avoiding multiple API calls. The trade-off is additional schema, resolver, and query-validation complexity on the server. The shipped-orders resolver reuses the order-store query rather than accessing MongoDB directly, avoiding duplicate query logic and keeping REST and GraphQL data access consistent.
