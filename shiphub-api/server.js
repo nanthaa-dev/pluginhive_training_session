@@ -1,7 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import { getAllOrders, getOrderById, createOrder, updateOrder, getOrdersByStatus } from './order-store.js';
-import { PORT } from './config.js';
+import {
+  PORT,
+  ROAD_RUNNER_BASE_URL,
+  ROAD_RUNNER_API_KEY,
+  ROAD_RUNNER_TIMEOUT_MS,
+  ROAD_RUNNER_MOCK_ENABLED,
+  ROAD_RUNNER_MOCK_MODE,
+  ROAD_RUNNER_MOCK_DELAY_MS
+} from './config.js';
 import { logger } from './logger.js';
 import { notFound } from './notFound.js';
 import { errorHandler } from './errorHandler.js';
@@ -11,6 +19,9 @@ import Order from './order-model.js';
 import { createHandler } from 'graphql-http/lib/use/express';
 import { schema } from './resolvers.js';
 import { fileURLToPath } from 'node:url';
+import { createRatesRouter } from './rates/routes.js';
+import { createRoadRunnerMockRouter } from './rates/road-runner-mock.js';
+import { createRoadRunnerAdapter } from './rates/road-runner-adapter.js';
 export const app = express();
 app.use((req, res, next) => {
   const startTime = Date.now();
@@ -34,6 +45,20 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 app.use(express.json());
+app.use('/rates', createRatesRouter([
+  createRoadRunnerAdapter({
+    baseUrl: ROAD_RUNNER_BASE_URL,
+    token: ROAD_RUNNER_API_KEY,
+    timeoutMs: ROAD_RUNNER_TIMEOUT_MS
+  })
+]));
+if (ROAD_RUNNER_MOCK_ENABLED) {
+  app.use('/road-runner', createRoadRunnerMockRouter({
+    apiKey: ROAD_RUNNER_API_KEY,
+    mode: ROAD_RUNNER_MOCK_MODE,
+    delayMs: ROAD_RUNNER_MOCK_DELAY_MS
+  }));
+}
 app.get('/orders', async (req, res) => {
   const { status, priority } = req.query;
 

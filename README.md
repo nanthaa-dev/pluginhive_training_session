@@ -199,5 +199,11 @@ in [`Day 08/`](<./Day 08/>). Start with its [assignment README](<./Day 08/README
 The repaired root Compose stack and setup instructions are documented in
 [`Day 09/`](<./Day 09/>), with fault analysis in [`NOTES.md`](./NOTES.md) and
 terminal validation in [`Day 09/evidence.md`](<./Day 09/evidence.md>).
+
+# 13. Day 12 — Add the Road Runner carrier
+
+The adapter design, environment settings, mock modes, test command, response
+examples, and reflection are documented in [`Day 12/README.md`](<./Day 12/README.md>),
+with observed `/rates` outputs in [`Day 12/evidence.md`](<./Day 12/evidence.md>).
 # pluginhive_training_session
 # pluginhive_training_session
