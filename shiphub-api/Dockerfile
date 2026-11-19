@@ -18,6 +18,7 @@ COPY --chown=node:node package.json server.js config.js db.js \
     order-store.js resolvers.js schema.graphql ./
 COPY --chown=node:node migrations ./migrations
 COPY --chown=node:node rates ./rates
+COPY --chown=node:node fulfilment ./fulfilment
 
 USER node
 

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { ORDER_FLOW } from './fulfilment/flows.js';
 
 const orderSchema = new mongoose.Schema(
   {
@@ -26,7 +27,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+      enum: Object.keys(ORDER_FLOW),
       default: 'Pending'
     },
     priority: {

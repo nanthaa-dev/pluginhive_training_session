@@ -205,5 +205,11 @@ terminal validation in [`Day 09/evidence.md`](<./Day 09/evidence.md>).
 The adapter design, environment settings, mock modes, test command, response
 examples, and reflection are documented in [`Day 12/README.md`](<./Day 12/README.md>),
 with observed `/rates` outputs in [`Day 12/evidence.md`](<./Day 12/evidence.md>).
+
+# 14. Day 13 — Return to sender
+
+The shipment return state machine, API commands, tests, and design reflection
+are documented in [`Day 13/README.md`](<./Day 13/README.md>), with request and
+response examples in [`Day 13/evidence.md`](<./Day 13/evidence.md>).
 # pluginhive_training_session
 # pluginhive_training_session

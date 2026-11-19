@@ -4,7 +4,8 @@ export type OrderStatus =
   | "Processing"
   | "Shipped"
   | "Delivered"
-  | "Cancelled";
+  | "Cancelled"
+  | "Returned";
 
 export interface Order {
   id: string;

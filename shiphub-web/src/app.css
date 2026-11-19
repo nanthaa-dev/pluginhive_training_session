@@ -196,6 +196,11 @@ button:disabled {
   background-color: #f8d7da;
   color: #721c24;
 }
+
+.status-badge.returned {
+  background-color: #e2d9f3;
+  color: #4b2c70;
+}
 tbody button {
   background-color: #1769aa;
   color: white;

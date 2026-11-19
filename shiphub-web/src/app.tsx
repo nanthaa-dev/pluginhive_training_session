@@ -13,6 +13,7 @@ const STATUSES: OrderStatus[] = [
   "Shipped",
   "Delivered",
   "Cancelled",
+  "Returned",
 ];
 function App() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -125,7 +126,8 @@ function App() {
                       disabled={
                         order.status === "Shipped" ||
                         order.status === "Delivered" ||
-                        order.status === "Cancelled"
+                        order.status === "Cancelled" ||
+                        order.status === "Returned"
                       }
                       onClick={() => void markAsShipped(order.id)}
                     >

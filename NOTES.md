@@ -84,3 +84,11 @@ MongoDB runs without authentication in this local learning stack. Host ports
 and placeholder PostgreSQL credentials are for development only; production
 would need authenticated database access, managed secrets, and restricted
 network exposure.
+
+## Day 13 — Return-to-sender guard
+
+Premature return was initially accepted → the shipment graph allowed
+`out_for_delivery → returned` but `move()` did not check failed-attempt count →
+`move()` now requires three recorded failures for the return edge → the
+`rejects a return before the third failed attempt` test fails without the guard
+and passes with it.

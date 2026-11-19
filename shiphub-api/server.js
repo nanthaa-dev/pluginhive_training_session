@@ -22,6 +22,12 @@ import { fileURLToPath } from 'node:url';
 import { createRatesRouter } from './rates/routes.js';
 import { createRoadRunnerMockRouter } from './rates/road-runner-mock.js';
 import { createRoadRunnerAdapter } from './rates/road-runner-adapter.js';
+import { createFulfilmentRouter } from './fulfilment/routes.js';
+import {
+  InvalidTransitionError,
+  ORDER_FLOW,
+  move
+} from './fulfilment/flows.js';
 export const app = express();
 app.use((req, res, next) => {
   const startTime = Date.now();
@@ -59,6 +65,7 @@ if (ROAD_RUNNER_MOCK_ENABLED) {
     delayMs: ROAD_RUNNER_MOCK_DELAY_MS
   }));
 }
+app.use('/shipments', createFulfilmentRouter());
 app.get('/orders', async (req, res) => {
   const { status, priority } = req.query;
 
@@ -68,7 +75,8 @@ app.get('/orders', async (req, res) => {
       'Processing',
       'Shipped',
       'Delivered',
-      'Cancelled'
+      'Cancelled',
+      'Returned'
     ];
 
     if (!allowedStatuses.includes(status)) {
@@ -177,13 +185,7 @@ app.patch('/orders/:id', async (req, res) => {
     }
   }
 
-  const allowedStatuses = [
-    'Pending',
-    'Processing',
-    'Shipped',
-    'Delivered',
-    'Cancelled'
-  ];
+  const allowedStatuses = Object.keys(ORDER_FLOW);
 
   if (
     'status' in updates &&
@@ -193,6 +195,20 @@ app.patch('/orders/:id', async (req, res) => {
   }
 
   const updatedOrder = { ...updates };
+
+  if (updatedOrder.status !== undefined) {
+    if (updatedOrder.status === 'Returned') {
+      throw new HttpError(409, 'Returned status is managed by shipment transitions');
+    }
+    try {
+      updatedOrder.status = move(existingOrder.status, updatedOrder.status, ORDER_FLOW);
+    } catch (error) {
+      if (error instanceof InvalidTransitionError) {
+        throw new HttpError(409, error.message);
+      }
+      throw error;
+    }
+  }
 
   if (updatedOrder.customer !== undefined) {
     updatedOrder.customer = updatedOrder.customer.trim();

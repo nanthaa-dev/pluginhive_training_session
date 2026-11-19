@@ -8,6 +8,7 @@ export function countByStatus(orders: Order[]): StatusCounts {
     Shipped: 0,
     Delivered: 0,
     Cancelled: 0,
+    Returned: 0,
   };
 
   for (const order of orders) {
